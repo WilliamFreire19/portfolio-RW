@@ -1,32 +1,137 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 
+const FormularioContato = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    instagram: '',
+    whatsapp: '',
+    motivacaoContato: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const formatWhatsAppMessage = (data) => {
+    const message = `Olá! Gostaria de solicitar um orçamento.
+
+Dados para contato:
+Nome: ${data.name}
+Instagram: ${data.instagram}
+WhatsApp: ${data.whatsapp}
+Motivação para o contato: ${data.motivacaoContato}
+
+Aguardo o retorno para conversarmos sobre os serviços!`;
+    return encodeURIComponent(message);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!formData.name || !formData.instagram || !formData.whatsapp || !formData.motivacaoContato) {
+      alert('Por favor, preencha todos os campos.');
+      return false;
+    }
+
+    const whatsappNumber = '5591991883384';
+    const message = formatWhatsAppMessage(formData);
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+    
+    window.open(whatsappURL, '_blank');
+    
+    setFormData({
+      name: '',
+      instagram: '',
+      whatsapp: '',
+      motivacaoContato: ''
+    });
+
+    return false;
+  };
+
+  return (
+    <div className="form-wrapper">
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Seu Nome</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="instagram">Seu Instagram</label>
+          <input
+            type="text"
+            id="instagram"
+            name="instagram"
+            placeholder="seuusuario"
+            value={formData.instagram}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="whatsapp">WhatsApp</label>
+          <input
+            type="tel"
+            id="whatsapp"
+            name="whatsapp"
+            placeholder="99 99999-9999"
+            value={formData.whatsapp}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="motivacaoContato">O que motivou esse primeiro contato?</label>
+          <select
+            id="motivacaoContato"
+            name="motivacaoContato"
+            value={formData.motivacaoContato}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Selecione uma opção</option>
+            <option value="buscar-se-destacar">Buscar se destacar</option>
+            <option value="ter-mais-autoridade">Ter mais autoridade</option>
+            <option value="ja-queria-um-site">Já queria um site</option>
+            <option value="mais-credibilidade">Mais credibilidade</option>
+            <option value="mais-faturamento">Mais faturamento</option>
+            <option value="apenas-quero-saber-mais">Apenas quero saber mais sobre</option>
+          </select>
+        </div>
+
+        <button type="submit" className="btn btn-primary">
+          Enviar e Pedir Orçamento
+        </button>
+      </form>
+    </div>
+  );
+};
+
+
+
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
 
   const portfolioItems = [
-    {
-      name: 'RevisaCar',
-      url: 'https://revisacar.com.br/index',
-      img: './assets/images/imagem1.png',
-    },
-    {
-      name: 'Auto Detailing BR',
-      url: 'https://autodetailingbr.netlify.app/',
-      img: './assets/images/imagem2.png',
-    },
-    {
-      name: 'Starker SPA Automotivo',
-      url: 'https://starkerspaautomotivo.com.br/',
-      img: './assets/images/imagem3.png',
-    },
-    {
-      name: 'Unique Estética Auto',
-      url: 'https://www.uniqueesteticaauto.com.br/#',
-      img: './assets/images/imagem4.png',
-    },
-  ];
+  { name: 'RevisaCar', url: 'https://revisacar.com.br/index', img: '/images/imagem1.png' },
+  { name: 'Auto Detailing BR', url: 'https://autodetailingbr.netlify.app', img: '/images/imagem2.png' },
+  { name: 'Starker SPA Automotivo', url: 'https://starkerspaautomotivo.com.br', img: '/images/imagem3.png' },
+  { name: 'Unique Estética Auto', url: 'https://www.uniqueesteticaauto.com.br', img: '/images/imagem4.png' }
+];
 
   const faqData = [
   {
@@ -43,7 +148,7 @@ const App = () => {
   },
   {
   question: "Qual é o investimento para ter um site profissional?",
-  answer: "Oferecemos duas modalidades de investimento: **Investimento único** (você paga uma vez e o site é seu) ou **Investimento parcelado** (valores menores mensais com serviços incluídos). Cada modalidade tem suas vantagens específicas dependendo do seu perfil e necessidades. Entre em contato conosco para uma conversa sem compromisso e descobriremos qual opção se encaixa melhor no seu orçamento e objetivos."
+  answer: "Oferecemos duas modalidades de investimento: Investimento único (você paga uma vez e o site é seu) ou Investimento parcelado (valores menores mensais com serviços incluídos). Cada modalidade tem suas vantagens específicas dependendo do seu perfil e necessidades. Entre em contato conosco para uma conversa sem compromisso e descobriremos qual opção se encaixa melhor no seu orçamento e objetivos."
 },
   {
   question: "Vocês fazem manutenção do site após a entrega?",
@@ -118,66 +223,6 @@ const App = () => {
       </div>
     );
   };
-
-  // Estado do formulário
-const [formData, setFormData] = useState({
-    name: '',
-    instagram: '',
-    whatsapp: ''
-});
-
-// Função para lidar com mudanças nos inputs
-const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-        ...prev,
-        [name]: value
-    }));
-};
-
-// Função para formatar a mensagem do WhatsApp
-const formatWhatsAppMessage = (data) => {
-    const message = `Olá! Gostaria de solicitar um orçamento.
-
-*Dados para contato:*
-• Nome: ${data.name}
-• Instagram: ${data.instagram}
-• WhatsApp: ${data.whatsapp}
-
-Aguardo o retorno para conversarmos sobre os serviços!`;
-    
-    return encodeURIComponent(message);
-};
-
-// Função para lidar com o envio do formulário
-const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Validar se todos os campos estão preenchidos
-    if (!formData.name || !formData.instagram || !formData.whatsapp) {
-        alert('Por favor, preencha todos os campos.');
-        return;
-    }
-    
-    // Formatar a mensagem
-    const message = formatWhatsAppMessage(formData);
-    
-    // Número do WhatsApp (91 991883384)
-    const whatsappNumber = '5591991883384';
-    
-    // URL do WhatsApp
-    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
-    
-    // Abrir o WhatsApp
-    window.open(whatsappURL, '_blank');
-    
-    // Limpar o formulário após envio
-    setFormData({
-        name: '',
-        instagram: '',
-        whatsapp: ''
-    });  
-};
 
   return (
     <>
@@ -701,37 +746,80 @@ const handleSubmit = (e) => {
         }
 
         /* Form Section */
-        .form-wrapper {
-            max-width: 700px;
-            margin: 0 auto;
-            background: var(--graphite);
-            padding: 40px;
-            border-radius: 12px;
-            border: 1px solid var(--slate);
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid var(--slate);
-            background-color: var(--onyx);
-            color: var(--text-primary);
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--electric-violet);
-        }
+       .form-wrapper {
+  max-width: 600px;
+  margin: 50px auto;
+  background: var(--graphite);
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--slate);
+  box-sizing: border-box;
+}
+
+.form-wrapper form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: left;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--slate);
+  background-color: var(--onyx);
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--electric-violet);
+  box-shadow: 0 0 0 2px rgba(142, 45, 226, 0.2);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .form-wrapper {
+    max-width: 90%;
+    margin: 30px auto;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-wrapper {
+    margin: 20px auto;
+    padding: 20px;
+  }
+  
+  .form-group,
+  .btn.btn-primary {
+    max-width: 100%;
+  }
+}
+
+
+            
 
         /* Footer */
         .footer {
@@ -997,54 +1085,9 @@ Site + Instagram = Sucesso Garantido
         </section>
         
         {/* Form Section */}
-        <section id="contato" className="container">
-    <FadeInSection>
-        <h2>Vamos construir seu <span>sucesso online?</span></h2>
-        <p className="section-description">Preencha o formulário abaixo e receba uma proposta personalizada sem compromisso.</p>
-        <div className="form-wrapper">
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="name">Seu Nome</label>
-                    <input 
-                        type="text" 
-                        id="name" 
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required 
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="instagram">Seu Instagram</label>
-                    <input 
-                        type="text" 
-                        id="instagram" 
-                        name="instagram"
-                        placeholder="@seuusuario" 
-                        value={formData.instagram}
-                        onChange={handleInputChange}
-                        required 
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="whatsapp">WhatsApp</label>
-                    <input 
-                        type="tel" 
-                        id="whatsapp" 
-                        name="whatsapp"
-                        placeholder="(99) 99999-9999" 
-                        value={formData.whatsapp}
-                        onChange={handleInputChange}
-                        required 
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary" style={{width: '100%'}}>
-                    Enviar e Pedir Orçamento
-                </button>
-            </form>
-        </div>
-    </FadeInSection>
-</section>
+        <section id="contact" className="contact">
+       <FormularioContato />
+        </section>
 
       </main>
 
