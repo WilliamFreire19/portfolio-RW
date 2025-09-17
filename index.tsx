@@ -3,10 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 const FormularioContato = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    instagram: '',
-    whatsapp: '',
-    motivacaoContato: ''
+    name: '', instagram: '', whatsapp: '', motivacaoContato: ''
   });
 
   const handleInputChange = (e) => {
@@ -29,27 +26,14 @@ Aguardo o retorno para conversarmos sobre os serviços!`;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    
     if (!formData.name || !formData.instagram || !formData.whatsapp || !formData.motivacaoContato) {
       alert('Por favor, preencha todos os campos.');
-      return false;
+      return;
     }
 
-    const whatsappNumber = '5591991883384';
-    const message = formatWhatsAppMessage(formData);
-    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
-    
+    const whatsappURL = `https://wa.me/5591991883384?text=${formatWhatsAppMessage(formData)}`;
     window.open(whatsappURL, '_blank');
-    
-    setFormData({
-      name: '',
-      instagram: '',
-      whatsapp: '',
-      motivacaoContato: ''
-    });
-
-    return false;
+    setFormData({ name: '', instagram: '', whatsapp: '', motivacaoContato: '' });
   };
 
   return (
@@ -57,51 +41,19 @@ Aguardo o retorno para conversarmos sobre os serviços!`;
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Seu Nome</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-          />
+          <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required />
         </div>
-        
         <div className="form-group">
           <label htmlFor="instagram">Seu Instagram</label>
-          <input
-            type="text"
-            id="instagram"
-            name="instagram"
-            placeholder="seuusuario"
-            value={formData.instagram}
-            onChange={handleInputChange}
-            required
-          />
+          <input type="text" id="instagram" name="instagram" placeholder="seuusuario" value={formData.instagram} onChange={handleInputChange} required />
         </div>
-        
         <div className="form-group">
           <label htmlFor="whatsapp">WhatsApp</label>
-          <input
-            type="tel"
-            id="whatsapp"
-            name="whatsapp"
-            placeholder="99 99999-9999"
-            value={formData.whatsapp}
-            onChange={handleInputChange}
-            required
-          />
+          <input type="tel" id="whatsapp" name="whatsapp" placeholder="99 99999-9999" value={formData.whatsapp} onChange={handleInputChange} required />
         </div>
-
         <div className="form-group">
           <label htmlFor="motivacaoContato">O que motivou esse primeiro contato?</label>
-          <select
-            id="motivacaoContato"
-            name="motivacaoContato"
-            value={formData.motivacaoContato}
-            onChange={handleInputChange}
-            required
-          >
+          <select id="motivacaoContato" name="motivacaoContato" value={formData.motivacaoContato} onChange={handleInputChange} required>
             <option value="">Selecione uma opção</option>
             <option value="buscar-se-destacar">Buscar se destacar</option>
             <option value="ter-mais-autoridade">Ter mais autoridade</option>
@@ -111,48 +63,100 @@ Aguardo o retorno para conversarmos sobre os serviços!`;
             <option value="apenas-quero-saber-mais">Apenas quero saber mais sobre</option>
           </select>
         </div>
-
-        <button type="submit" className="btn btn-primary">
-          Enviar e Pedir Orçamento
-        </button>
+        <button type="submit" className="btn btn-primary">Enviar e Pedir Orçamento</button>
       </form>
     </div>
   );
 };
 
+const GoogleSearchMock = () => {
+  const [currentSearch, setCurrentSearch] = useState(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
 
+  const searches = [
+    'estética automotiva perto de mim', 'polimento de carro', 'higienização automotiva',
+    'enceramento automotivo', 'lavagem ecológica', 'proteção cerâmica automotiva',
+    'revitalização de pintura', 'detailing automotivo', 'cera de carnaúba', 'lavagem a seco'
+  ];
+
+  useEffect(() => {
+    const currentText = searches[currentSearch];
+    let timeout;
+
+    if (isTyping) {
+      if (displayText.length < currentText.length) {
+        timeout = setTimeout(() => setDisplayText(currentText.slice(0, displayText.length + 1)), 100);
+      } else {
+        timeout = setTimeout(() => setIsTyping(false), 2000);
+      }
+    } else {
+      if (displayText.length > 0) {
+        timeout = setTimeout(() => setDisplayText(displayText.slice(0, -1)), 50);
+      } else {
+        setCurrentSearch((prev) => (prev + 1) % searches.length);
+        setIsTyping(true);
+      }
+    }
+    return () => clearTimeout(timeout);
+  }, [displayText, isTyping, currentSearch, searches]);
+
+  return (
+    <div className="google-search-mock">
+      <div className="search-container">
+        <div className="google-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+        </div>
+        <div className="search-input">
+          <span className="search-text">{displayText}</span>
+          <span className="search-cursor">|</span>
+        </div>
+        <button className="search-button" aria-label="Pesquisar">
+          <svg width="20" height="20" viewBox="0 0 24 24">
+            <path fill="var(--electric-violet)" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [openAccordion, setOpenAccordion] = useState<number | null>(null);
+  const [openAccordion, setOpenAccordion] = useState(null);
 
   const portfolioItems = [
-  { name: 'RevisaCar', url: 'https://revisacar.com.br/index', img: '/images/imagem1.png' },
-  { name: 'Auto Detailing BR', url: 'https://autodetailingbr.netlify.app', img: '/images/imagem2.png' },
-  { name: 'Starker SPA Automotivo', url: 'https://starkerspaautomotivo.com.br', img: '/images/imagem3.png' },
-  { name: 'Unique Estética Auto', url: 'https://www.uniqueesteticaauto.com.br', img: '/images/imagem4.png' }
-];
+    { name: 'RevisaCar', url: 'https://revisacar.com.br/index', img: '/images/imagem1.png' },
+    { name: 'Auto Detailing BR', url: 'https://autodetailingbr.netlify.app', img: '/images/imagem2.png' },
+    { name: 'Starker SPA Automotivo', url: 'https://starkerspaautomotivo.com.br', img: '/images/imagem3.png' },
+    { name: 'Unique Estética Auto', url: 'https://www.uniqueesteticaauto.com.br', img: '/images/imagem4.png' }
+  ];
 
   const faqData = [
-  {
-    question: "Quanto tempo demora para meu site ficar pronto?",
-    answer: "O prazo médio é de 7 a 10 dias úteis, dependendo da complexidade do projeto. Isso inclui toda a estratégia, design, desenvolvimento e otimização SEO. Trabalhamos com prazos realistas para garantir a qualidade máxima."
-  },
-  {
-    question: "Meu site vai aparecer no Google quando as pessoas pesquisarem?",
-    answer: "Sim! Todos os nossos sites são otimizados para SEO desde o desenvolvimento. Configuramos palavras-chave específicas do seu negócio como 'estética automotiva [sua cidade]' para que você seja encontrado pelos clientes certos."
-  },
-  {
-    question: "Preciso fornecer textos e fotos ou vocês criam tudo?",
-    answer: "Nós criamos todos os textos profissionais do seu site. Para as fotos, recomendamos que você forneça imagens dos seus trabalhos (celular mesmo), pois são o seu diferencial. Também podemos sugerir bancos de imagens complementares se necessário."
-  },
-  {
-  question: "Qual é o investimento para ter um site profissional?",
-  answer: "Oferecemos duas modalidades de investimento: Investimento único (você paga uma vez e o site é seu) ou Investimento parcelado (valores menores mensais com serviços incluídos). Cada modalidade tem suas vantagens específicas dependendo do seu perfil e necessidades. Entre em contato conosco para uma conversa sem compromisso e descobriremos qual opção se encaixa melhor no seu orçamento e objetivos."
-},
-  {
-  question: "Vocês fazem manutenção do site após a entrega?",
-  answer: "Sim! Nos responsabilizamos por manter seu site sempre funcionando perfeitamente - isso inclui atualizações de segurança, backups e monitoramento. Porém, alterações de conteúdo, design ou novas funcionalidades precisam ser negociadas separadamente. Para maior comodidade, oferecemos um **Plano de Acompanhamento** que inclui alterações mensais, suporte prioritário e muito mais. Entre em contato para conhecer todos os detalhes deste plano."
+    {
+      question: "Quanto tempo demora para meu site ficar pronto?",
+      answer: "O prazo médio é de 7 a 10 dias úteis, dependendo da complexidade do projeto. Isso inclui toda a estratégia, design, desenvolvimento e otimização SEO. Trabalhamos com prazos realistas para garantir a qualidade máxima."
+    },
+    {
+      question: "Meu site vai aparecer no Google quando as pessoas pesquisarem?",
+      answer: "Sim! Todos os nossos sites são otimizados para SEO desde o desenvolvimento. Configuramos palavras-chave específicas do seu negócio como 'estética automotiva [sua cidade]' para que você seja encontrado pelos clientes certos."
+    },
+    {
+      question: "Preciso fornecer textos e fotos ou vocês criam tudo?",
+      answer: "Nós criamos todos os textos profissionais do seu site. Para as fotos, recomendamos que você forneça imagens dos seus trabalhos (celular mesmo), pois são o seu diferencial. Também podemos sugerir bancos de imagens complementares se necessário."
+    },
+    {
+      question: "Qual é o investimento para ter um site profissional?",
+      answer: "Oferecemos duas modalidades de investimento: Investimento único (você paga uma vez e o site é seu) ou Investimento parcelado (valores menores mensais com serviços incluídos). Cada modalidade tem suas vantagens específicas dependendo do seu perfil e necessidades. Entre em contato conosco para uma conversa sem compromisso e descobriremos qual opção se encaixa melhor no seu orçamento e objetivos."
+    },
+    {
+      question: "Vocês fazem manutenção do site após a entrega?",
+      answer: "Sim! Nos responsabilizamos por manter seu site sempre funcionando perfeitamente - isso inclui atualizações de segurança, backups e monitoramento. Porém, alterações de conteúdo, design ou novas funcionalidades precisam ser negociadas separadamente. Para maior comodidade, oferecemos um **Plano de Acompanhamento** que inclui alterações mensais, suporte prioritário e muito mais. Entre em contato para conhecer todos os detalhes deste plano."
 },
   {
     question: "E se eu não gostar do resultado final?",
@@ -289,6 +293,110 @@ const App = () => {
             font-size: 1.1rem;
             line-height: 1.6;
         }
+
+.google-search-mock {
+  max-width: 500px;
+  margin: 40px auto 0;
+  text-align: center;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  background: var(--graphite);
+  border: 1px solid var(--slate);
+  border-radius: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.search-container:hover {
+  box-shadow: 0 6px 20px rgba(142, 45, 226, 0.2);
+  border-color: var(--electric-violet);
+}
+
+.google-icon {
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.search-text {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  line-height: 24px;
+}
+
+.search-cursor {
+  color: var(--electric-violet);
+  font-size: 16px;
+  animation: blink 1s infinite;
+  margin-left: 1px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.search-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  margin-left: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.search-button:hover {
+  background-color: rgba(142, 45, 226, 0.1);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .google-search-mock {
+    margin: 30px auto 0;
+    padding: 0 20px;
+  }
+  
+  .search-container {
+    max-width: 100%;
+    padding: 10px 14px;
+  }
+  
+  .search-text {
+    font-size: 14px;
+  }
+  
+  .google-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .search-button svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 
         .btn {
           display: inline-block;
@@ -709,6 +817,56 @@ const App = () => {
         }
 
         /* Profile Section */
+        .profile-cta {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.profile-section .btn {
+    display: inline-block;
+    padding: 18px 36px;
+    background: linear-gradient(135deg, var(--electric-violet) 0%, var(--cobalt) 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(142, 45, 226, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-section .btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.profile-section .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(142, 45, 226, 0.4);
+    background: linear-gradient(135deg, var(--cobalt) 0%, var(--electric-violet) 100%);
+}
+
+.profile-section .btn:hover::before {
+    left: 100%;
+}
+
+@media (max-width: 768px) {
+    .profile-section .btn {
+        padding: 16px 28px;
+        font-size: 1rem;
+    }
+}
+
         .profile-section {
           background-color: var(--graphite);
           border-radius: 12px;
@@ -729,6 +887,79 @@ const App = () => {
           align-items: center;
           gap: 10px;
         }
+          .portfolio-cta {
+    text-align: center;
+    max-width: 600px;
+    margin: 60px auto 0;
+    padding: 40px;
+    background: linear-gradient(135deg, var(--graphite) 0%, var(--slate) 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(142, 45, 226, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.portfolio-cta::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--electric-violet), transparent);
+}
+
+.portfolio-cta h3 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--electric-violet), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.portfolio-cta p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.portfolio-cta .btn {
+    display: inline-block;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, var(--electric-violet) 0%, var(--cobalt) 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(142, 45, 226, 0.3);
+}
+
+.portfolio-cta .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(142, 45, 226, 0.4);
+    background: linear-gradient(135deg, var(--cobalt) 0%, var(--electric-violet) 100%);
+}
+
+@media (max-width: 768px) {
+    .portfolio-cta {
+        margin: 40px 20px 0;
+        padding: 30px 20px;
+    }
+    
+    .portfolio-cta h3 {
+        font-size: 1.5rem;
+    }
+    
+    .portfolio-cta p {
+        font-size: 1rem;
+    }
+}
+
 
         /* About Section */
         .about-content {
@@ -895,7 +1126,7 @@ const App = () => {
                 <li><a href="#portfolio" onClick={() => setIsMenuOpen(false)}>Portfólio</a></li>
                 <li><a href="#sobre" onClick={() => setIsMenuOpen(false)}>Sobre</a></li>
                 <li><a href="#faq" onClick={() => setIsMenuOpen(false)}>FAQ</a></li>
-                <li><a href="#contato" onClick={() => setIsMenuOpen(false)}>Contato</a></li>
+                <li><a href="#contact" onClick={() => setIsMenuOpen(false)}>Contato</a></li>
             </ul>
         </nav>
         <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -907,9 +1138,9 @@ const App = () => {
         {/* Hero Section */}
         <section className="hero">
           <div className="hero-content">
-            <h1>Sua Estética Automotiva merece uma Presença Online de <span>Alta Performance</span></h1>
-            <p>Somos especialistas em criar sites que transformam visitantes em clientes apaixonados pelo seu trabalho. Posicione sua marca, atraia o público certo e acelere seu faturamento.</p>
-            <a href="#contato" className="btn btn-primary">Quero um Site de Sucesso</a>
+            <h1>Explore o Oceano Azul Que Seus Concorrentes Ainda Não Descobriram</h1>
+            <p>Milhares de pessoas procuram estética automotiva todo dia no Google, mas quase ninguém do seu nicho está lá. Esta é sua chance.</p>
+<GoogleSearchMock />
           </div>
         </section>
 
@@ -974,22 +1205,32 @@ Site + Instagram = Sucesso Garantido
         
         {/* Portfolio Section */}
         <section id="portfolio" className="container">
-            <FadeInSection>
-                <h2>Portfólio de <span>Projetos</span></h2>
-                <p className="section-description">Confira alguns sites que desenvolvemos para estéticas automotivas que, como a sua, buscaram se destacar no mercado digital.</p>
-                <div className="portfolio-grid">
-                    {portfolioItems.map(item => (
-                        <div key={item.name} className="portfolio-item">
-                            <img src={item.img} alt={item.name} />
-                            <div className="portfolio-overlay">
-                                <h3>{item.name}</h3>
-                                <a href={item.url} target="_blank" rel="noopener noreferrer">Ver projeto &rarr;</a>
-                            </div>
-                        </div>
-                    ))}
+    <FadeInSection>
+        <h2>Portfólio de <span>Projetos</span></h2>
+        <p className="section-description">Confira alguns sites que desenvolvemos para estéticas automotivas que, como a sua, buscaram se destacar no mercado digital.</p>
+        <div className="portfolio-grid">
+            {portfolioItems.map(item => (
+                <div key={item.name} className="portfolio-item">
+                    <img src={item.img} alt={item.name} />
+                    <div className="portfolio-overlay">
+                        <h3>{item.name}</h3>
+                        <a href={item.url} target="_blank" rel="noopener noreferrer">Ver projeto &rarr;</a>
+                    </div>
                 </div>
-            </FadeInSection>
-        </section>
+            ))}
+        </div>
+        
+        {/* ADICIONE ESTA SEÇÃO */}
+        <div className="portfolio-cta">
+            <h3>Seu Projeto Pode Ser o Próximo Case de Sucesso</h3>
+            <p>Estas estéticas dominaram seus mercados locais. Agora é a sua vez de brilhar no oceano azul do Google.</p>
+            <a href="#contact" className="btn btn-primary">
+                Quero Dominar Meu Mercado
+            </a>
+        </div>
+    </FadeInSection>
+</section>
+
 
         {/* Deliverables Section */}
         <section className="container">
@@ -1021,20 +1262,28 @@ Site + Instagram = Sucesso Garantido
 
         {/* Profile Section */}
         <section className="container">
-            <FadeInSection>
-                <div className="profile-section">
-                    <h2>Você está pronto para o <span>próximo nível?</span></h2>
-                    <p className="section-description" style={{marginBottom: 0}}>Se você se identifica com algum destes pontos, estamos prontos para ajudar.</p>
-                    <ul>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Sua estética é premium e quer um site que reflita essa qualidade.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Quer ser encontrado por quem já procura serviços de estética automotiva e faturar mais?</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Quer conquistar mais visibilidade e se tornar autoridade na sua região.</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Cansou de depender apenas do "boca a boca" e das redes sociais.</li>
-                    </ul>
-                    <p>Um site bem construído não é um custo, é o investimento que separa os amadores dos profissionais e eleva o seu faturamento e posicionamento a um novo patamar.</p>
-                </div>
-            </FadeInSection>
-        </section>
+    <FadeInSection>
+        <div className="profile-section">
+            <h2>Você está pronto para o <span>próximo nível?</span></h2>
+            <p className="section-description" style={{marginBottom: 0}}>Se você se identifica com algum destes pontos, estamos prontos para ajudar.</p>
+            <ul>
+                <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Sua estética é premium e quer um site que reflita essa qualidade.</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Quer ser encontrado por quem já procura serviços de estética automotiva e faturar mais?</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Quer conquistar mais visibilidade e se tornar autoridade na sua região.</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Cansou de depender apenas do "boca a boca" e das redes sociais.</li>
+            </ul>
+            <p>Um site bem construído não é um custo, é o investimento que separa os amadores dos profissionais e eleva o seu faturamento e posicionamento a um novo patamar.</p>
+            
+            {/* ADICIONE ESTE CTA */}
+            <div className="profile-cta">
+                <a href="#contact" className="btn btn-primary">
+                    Estou Pronto
+                </a>
+            </div>
+        </div>
+    </FadeInSection>
+</section>
+
 
         {/* FAQ Section */}
 <section id="faq" className="container">
@@ -1099,7 +1348,7 @@ Site + Instagram = Sucesso Garantido
                 <li><a href="#portfolio">Portfólio</a></li>
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contato">Contato</a></li>
+                <li><a href="#contact">Contato</a></li>
             </ul>
            <div className="footer-copyright">
                 <p>&copy; {new Date().getFullYear()} ReferenciaWeb. Todos os direitos reservados.</p>
