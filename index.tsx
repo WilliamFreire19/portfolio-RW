@@ -1122,10 +1122,10 @@ const App = () => {
         <a href="#" className="logo">rw&gt;</a>
         <nav>
             <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
-                <li><a href="#processo" onClick={() => setIsMenuOpen(false)}>Processo</a></li>
                 <li><a href="#portfolio" onClick={() => setIsMenuOpen(false)}>Portfólio</a></li>
+                <li><a href="#processo" onClick={() => setIsMenuOpen(false)}>Processo</a></li>
+                <li><a href="#faq" onClick={() => setIsMenuOpen(false)}>FAQ</a></li>                
                 <li><a href="#sobre" onClick={() => setIsMenuOpen(false)}>Sobre</a></li>
-                <li><a href="#faq" onClick={() => setIsMenuOpen(false)}>FAQ</a></li>
                 <li><a href="#contact" onClick={() => setIsMenuOpen(false)}>Contato</a></li>
             </ul>
         </nav>
@@ -1169,36 +1169,6 @@ const App = () => {
 Não se trata de escolher um ou outro. O segredo é ter site e Instagram trabalhando lado a lado para fazer seu negócio crescer.<br/><strong>
 Site + Instagram = Sucesso Garantido
 </strong>
-            </div>
-          </FadeInSection>
-        </section>
-
-        {/* Process Section */}
-        <section id="processo" className="container">
-          <FadeInSection>
-            <h2>Nosso Processo de <span>Desenvolvimento</span></h2>
-            <p className="section-description">Criamos projetos únicos em 4 etapas estratégicas, garantindo um resultado que reflete a excelência do seu trabalho.</p>
-            <div className="process-grid">
-              <div className="process-step">
-                <div className="step-number">01</div>
-                <h3>Imersão e Estratégia</h3>
-                <p>Entendemos seu negócio, público e objetivos para criar uma estratégia digital matadora.</p>
-              </div>
-              <div className="process-step">
-                <div className="step-number">02</div>
-                <h3>Design Exclusivo</h3>
-                <p>Criamos um layout moderno e intuitivo, focado na experiência do usuário e na conversão.</p>
-              </div>
-              <div className="process-step">
-                <div className="step-number">03</div>
-                <h3>Desenvolvimento</h3>
-                <p>Codificamos um site rápido, responsivo e otimizado para os motores de busca (SEO).</p>
-              </div>
-              <div className="process-step">
-                <div className="step-number">04</div>
-                <h3>Lançamento e Suporte</h3>
-                <p>Publicamos seu site e oferecemos todo o suporte para que você decole no mundo digital.</p>
-              </div>
             </div>
           </FadeInSection>
         </section>
@@ -1258,6 +1228,36 @@ Site + Instagram = Sucesso Garantido
                     ))}
                 </div>
             </FadeInSection>
+        </section>
+
+        {/* Process Section */}
+        <section id="processo" className="container">
+          <FadeInSection>
+            <h2>Nosso Processo de <span>Desenvolvimento</span></h2>
+            <p className="section-description">Criamos projetos únicos em 4 etapas estratégicas, garantindo um resultado que reflete a excelência do seu trabalho.</p>
+            <div className="process-grid">
+              <div className="process-step">
+                <div className="step-number">01</div>
+                <h3>Imersão e Estratégia</h3>
+                <p>Entendemos seu negócio, público e objetivos para criar uma estratégia digital matadora.</p>
+              </div>
+              <div className="process-step">
+                <div className="step-number">02</div>
+                <h3>Design Exclusivo</h3>
+                <p>Criamos um layout moderno e intuitivo, focado na experiência do usuário e na conversão.</p>
+              </div>
+              <div className="process-step">
+                <div className="step-number">03</div>
+                <h3>Desenvolvimento</h3>
+                <p>Codificamos um site rápido, responsivo e otimizado para os motores de busca (SEO).</p>
+              </div>
+              <div className="process-step">
+                <div className="step-number">04</div>
+                <h3>Lançamento e Suporte</h3>
+                <p>Publicamos seu site e oferecemos todo o suporte para que você decole no mundo digital.</p>
+              </div>
+            </div>
+          </FadeInSection>
         </section>
 
         {/* Profile Section */}
@@ -1344,10 +1344,10 @@ Site + Instagram = Sucesso Garantido
         <div className="footer-content">
           <a href="#" className="logo">rw&gt;</a>
            <ul className="nav-links">
-                <li><a href="#processo">Processo</a></li>
                 <li><a href="#portfolio">Portfólio</a></li>
-                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#processo">Processo</a></li>
                 <li><a href="#faq">FAQ</a></li>
+                <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#contact">Contato</a></li>
             </ul>
            <div className="footer-copyright">
