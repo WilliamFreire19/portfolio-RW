@@ -1147,28 +1147,30 @@ const App = () => {
         {/* Benefits Section */}
         <section className="container">
           <FadeInSection>
-            <h2>Google ou Instagram? <span>Onde estão seus melhores clientes?</span></h2>
-            <p className="section-description">O Instagram é ótimo para relacionamento, mas clientes com intenção de compra procuram no Google. Ter um site é ter um vendedor trabalhando para você 24h por dia, no lugar certo.</p>
+            <h2>Marketing Digital para Estética Automotiva</h2>
+            <p className="section-description">Enquanto seus concorrentes fazem o óbvio (Instagram + perfil básico no Google), você pode dominar o mercado com a estratégia que realmente funciona.</p>
             <div className="benefits-grid">
               <div className="benefit-card">
                 <h3>
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                  O Poder do Google
+                  Google meu negocio
                 </h3>
-                <p>No Google, o cliente já sabe o que quer e está procurando ativamente por "estética automotiva na minha cidade". Um site profissional coloca você no topo dos resultados, atraindo clientes prontos para contratar.</p>
+                <p>Uma das maiores portas de entrada para clientes.
+Mas a maioria dos perfis está mal otmizado: informações incompletas, poucas fotos e poucas avaliações. Isso faz com que o negócio não apareça para quem realmente está procurando e oportunidades sejam perdidas todos os dias.</p>
               </div>
               <div className="benefit-card">
                 <h3>
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                  A Fragilidade do Instagram
+                  Instagram
                 </h3>
-                <p>No Instagram, você está em um "terreno alugado". O alcance diminui, as regras mudam e a conta pode ser perdida. Seu site é seu ativo digital, um castelo que ninguém pode tirar de você.</p>
+                <p>O Instagram é ótimo para mostrar seu trabalho, criar conexão e passar confiança.
+Mas só ele não garante clientes novos. Afinal, todos do seu nicho também estão lá, disputando a atenção das mesmas pessoas. O resultado? Muita concorrência e pouco destaque.</p>
               </div>
             </div>
              <div className="complementary-note">
-Não se trata de escolher um ou outro. O segredo é ter site e Instagram trabalhando lado a lado para fazer seu negócio crescer.<br/><strong>
-Site + Instagram = Sucesso Garantido
-</strong>
+Um site profissional é o que posiciona sua estética do jeito certo no Google, transmitindo credibilidade e facilitando o contato do cliente.
+Combinado a um Google Meu Negócio bem otimizado e um Instagram estratégico, você é encontrado, desejado e escolhido.<br></br>
+<strong>Esse é o caminho para transformar visibilidade em clientes de verdade.</strong>
             </div>
           </FadeInSection>
         </section>
